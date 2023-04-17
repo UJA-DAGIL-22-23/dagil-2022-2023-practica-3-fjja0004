@@ -3,8 +3,8 @@
  * @description Callbacks para el MS Plantilla.
  * Los callbacks son las funciones que se llaman cada vez que se recibe una petición a través de la API.
  * Las peticiones se reciben en las rutas definidas en routes.js, pero se procesan aquí.
- * @author Víctor M. Rivas <vrivas@ujaen.es>
- * @date 03-feb-2023
+ * @author Francisco Javier Jiménez Aznar <fjja0004@red.ujaen.es>
+ * @date 17-abr-2023
  */
 
 
@@ -14,10 +14,10 @@ const faunadb = require('faunadb'),
     q = faunadb.query;
 
 const client = new faunadb.Client({
-    secret: '¿¿¿ CLAVE SECRETA EN FAUNA PARA ESTA BBDD???',
+    secret: 'fnAFBM0LMPAAzaY_HnWiwjteqwdYuZ-4yr08c1Dt',
 });
 
-const COLLECTION = "¿¿¿ COLECCION ???"
+const COLLECTION = "derbyshire"
 
 // CALLBACKS DEL MODELO
 
