@@ -5,7 +5,7 @@
 
 * **Nombre y apellidos**: Francisco Javier Jiménez Aznar
 * **Dirección de correo electrónico**: fjja0004@red.ujaen.es
-* **Tablero de Trello**: https://trello.com/b/c4V6xfBC/pr%C3%A1ctica3d%C3%A1gil
+* **Tablero de Trello**: https://trello.com/b/dNPOwWkO/pr%C3%A1ctica3d%C3%A1gil
 * **Deporte asignado**: Críquet
 
 # Información de la base de datos en Fauna
