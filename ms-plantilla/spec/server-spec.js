@@ -3,8 +3,8 @@
  * @description Fichero con la especificación de las pruebas TDD para server.js del MS MS Plantilla
  *              Este fichero DEBE llamarse server-spec.js
  *              Este fichero DEBE ubicarse en el subdirectorio spec/
- * @author Víctor M. Rivas Santos <vrivas@ujaen.es>
- * @date 03-Feb-2023
+ * @author Francisco Javier Jiménez Aznar <fjja0004@red.ujaen.es>
+ * @date 17-Abr-2023
  */
 
 
@@ -49,21 +49,35 @@ describe('Servidor PLANTILLA:', () => {
    * Tests para acceso a la BBDD
    */
   describe('Acceso a BBDD:', () => {
-    it('Devuelve ¿¿¿ VALOR ESPERADO ??? al consultar mediante test_db', (done) => {
+    it('Devuelve Max al consultar mediante test_db', (done) => {
       supertest(app)
         .get('/test_db')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
           //console.log( res.body ); // Para comprobar qué contiene exactamente res.body
-          assert(res.body.data[0].data.hasOwnProperty('¿¿¿ PROPIEDAD ???'));
-          assert(res.body.data[0].data.nombre === "¿¿¿ VALOR ESPERADO ???");
+          assert(res.body.data[0].data.hasOwnProperty('nombre'));
+          assert(res.body.data[0].data.nombre === "Max");
 
         })
         .end((error) => { error ? done.fail(error) : done(); }
         );
     });
+    
+    it('Devuelve un vector de tamaño 3 al consultar mediante getTodosJugadores', (done) => {
+      supertest(app)
+        .get('/getTodas')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function (res) {
+          assert(res.body.data.length === 3);
+        })
+        .end((error) => { error ? done.fail(error) : done(); }
+        );
+    });
 
+
+    //
   })
 });
 

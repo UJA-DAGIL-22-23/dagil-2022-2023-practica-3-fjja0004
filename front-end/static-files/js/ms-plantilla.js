@@ -18,6 +18,78 @@ Plantilla.datosDescargadosNulos = {
     fecha: ""
 }
 
+/**
+ * Función que crea la cabecera de la tabla en la que se 
+ * muestra la información
+ * @returns Cabecera de la tabla
+ */
+Plantilla.cabeceraTabla = function {
+    return `<table class= "listado-nombres">
+        <thead>
+        <th>Nombre del jugador</th>
+        </thead>
+        <tbody>
+    `;
+}
+
+/**
+ * Muestra la información de cada proyecto en un elemento TR con sus correspondientes TD
+ * @param {proyecto} p Datos del proyecto a mostrar
+ * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
+ */
+Proyectos.cuerpoTr = function (p) {
+    const d = p.data
+    const ini = d.inicio;
+    const fin = d.final;
+    const presupuesto = Frontend.euros(d.presupuesto);
+
+    return `<tr title="${p.ref['@ref'].id}">
+    <td>${d.alias}</td>
+    <td><em>${d.nombre}</em></td>
+    <td>${presupuesto}</td>
+    <td>${ini.dia}/${ini.mes}/${ini.año}</td>
+    <td>${fin.dia}/${fin.mes}/${fin.año}</td>
+    </tr>
+    `;
+}
+
+
+/**
+ * Muestra la información de cada proyecto (incluyendo las personas asignadas) 
+ * en varios elementos TR con sus correspondientes TD
+ * @param {proyecto} p Datos del proyecto a mostrar
+ * @returns Cadena conteniendo los distintos elementos TR que muestran el proyecto.
+ */
+Proyectos.cuerpoConPersonasTr = function (p) {
+    const d = p.data
+    const ini = d.inicio;
+    const fin = d.final;
+    const presupuesto = Frontend.euros(d.presupuesto);
+    let msj = Proyectos.cabeceraTable();
+    msj += `<tr>
+    <td>${d.alias}</td>
+    <td><em>${d.nombre}</em></td>
+    <td>${presupuesto}</td>
+    <td>${ini.dia}/${ini.mes}/${ini.año}</td>
+    <td>${fin.dia}/${fin.mes}/${fin.año}</td>
+    </tr>
+    <tr><th colspan="5">Personas</th></tr>
+    <tr><td colspan="5">
+        ${d.datos_personas
+            .map(e => "<a href='javascript:Personas.mostrar(\"" + e.ref['@ref'].id + "\")'>"
+                + e.data.nombre
+                + " " + e.data.apellidos
+                + "</a>")
+            .join(", ")}
+    </td></tr>
+    `;
+    msj += Proyectos.pieTable();
+    return msj;
+}
+
+Plantilla.pieTabla = function () {
+    return "</tbody></table>";
+}
 
 /**
  * Función que descarga la info MS Plantilla al llamar a una de sus rutas

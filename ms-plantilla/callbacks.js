@@ -17,7 +17,7 @@ const client = new faunadb.Client({
     secret: 'fnAFBM0LMPAAzaY_HnWiwjteqwdYuZ-4yr08c1Dt',
 });
 
-const COLLECTION = "derbyshire"
+const COLLECTION = "Derbyshire"
 
 // CALLBACKS DEL MODELO
 
@@ -61,8 +61,28 @@ const CB_MODEL_SELECTS = {
         }
     },
 
-}
+    /**
+* Método para obtener todos los jugadores de la BBDD
+* @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+* @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+*/
+    getTodosJugadores: async (req, res) => {
+        try {
+            let jugadores = await client.query(
+                q.Map(
+                    q.Paginate(q.Documents(q.Collection(COLLECTION))),
+                    q.Lambda("X", q.Get(q.Var("X")))
+                )
+            )
 
+            CORS(res)
+                .status(200)
+                .json(jugadores)
+        } catch (error) {
+            res.status(500).json({ error: error.description })
+        }
+    },
+}
 
 
 // CALLBACKS ADICIONALES
