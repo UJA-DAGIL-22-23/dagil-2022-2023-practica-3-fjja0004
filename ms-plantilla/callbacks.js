@@ -62,10 +62,10 @@ const CB_MODEL_SELECTS = {
     },
 
     /**
-* Método para obtener todos los jugadores de la BBDD
-* @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
-* @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
-*/
+    * Método para obtener todos los jugadores de la BBDD
+    * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+    * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+    */
     getTodosJugadores: async (req, res) => {
         try {
             let jugadores = await client.query(
@@ -79,7 +79,7 @@ const CB_MODEL_SELECTS = {
                 .status(200)
                 .json(jugadores)
         } catch (error) {
-            res.status(500).json({ error: error.description })
+            CORS(res).status(500).json({ error: error.description })
         }
     },
 }
@@ -128,3 +128,5 @@ const CB_OTHERS = {
 // MUY IMPORTANTE: No debe haber callbacks con el mismo nombre en los distintos objetos, porque si no
 //                 el último que haya SOBREESCRIBE a todos los anteriores.
 exports.callbacks = { ...CB_MODEL_SELECTS, ...CB_OTHERS }
+
+//CB_MODEL_SELECTS.getTodosJugadores();

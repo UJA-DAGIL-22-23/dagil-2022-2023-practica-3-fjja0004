@@ -13,9 +13,11 @@ let Plantilla = {};
 // Plantilla de datosDescargados vacíos
 Plantilla.datosDescargadosNulos = {
     mensaje: "Datos Descargados No válidos",
-    autor: "",
-    email: "",
-    fecha: ""
+    nombre: "",
+    nacionalidad: "",
+    fechaNacimiento: "",
+    peso: "",
+    altura: ""
 }
 
 /**
@@ -23,68 +25,26 @@ Plantilla.datosDescargadosNulos = {
  * muestra la información
  * @returns Cabecera de la tabla
  */
-Plantilla.cabeceraTabla = function {
-    return `<table class= "listado-nombres">
+Plantilla.cabeceraTable = function () {
+    return `<table class="listado-jugadores">
         <thead>
-        <th>Nombre del jugador</th>
+        <th>Nombre</th>
         </thead>
         <tbody>
     `;
 }
 
 /**
- * Muestra la información de cada proyecto en un elemento TR con sus correspondientes TD
- * @param {proyecto} p Datos del proyecto a mostrar
+ * Muestra el nombre de un jugador en un elemento TR con sus correspondientes TD
+ * @param {jugador} p Datos del jugador a mostrar
  * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
  */
-Proyectos.cuerpoTr = function (p) {
+Plantilla.cuerpoTr = function (p) {
     const d = p.data
-    const ini = d.inicio;
-    const fin = d.final;
-    const presupuesto = Frontend.euros(d.presupuesto);
 
     return `<tr title="${p.ref['@ref'].id}">
-    <td>${d.alias}</td>
-    <td><em>${d.nombre}</em></td>
-    <td>${presupuesto}</td>
-    <td>${ini.dia}/${ini.mes}/${ini.año}</td>
-    <td>${fin.dia}/${fin.mes}/${fin.año}</td>
     </tr>
     `;
-}
-
-
-/**
- * Muestra la información de cada proyecto (incluyendo las personas asignadas) 
- * en varios elementos TR con sus correspondientes TD
- * @param {proyecto} p Datos del proyecto a mostrar
- * @returns Cadena conteniendo los distintos elementos TR que muestran el proyecto.
- */
-Proyectos.cuerpoConPersonasTr = function (p) {
-    const d = p.data
-    const ini = d.inicio;
-    const fin = d.final;
-    const presupuesto = Frontend.euros(d.presupuesto);
-    let msj = Proyectos.cabeceraTable();
-    msj += `<tr>
-    <td>${d.alias}</td>
-    <td><em>${d.nombre}</em></td>
-    <td>${presupuesto}</td>
-    <td>${ini.dia}/${ini.mes}/${ini.año}</td>
-    <td>${fin.dia}/${fin.mes}/${fin.año}</td>
-    </tr>
-    <tr><th colspan="5">Personas</th></tr>
-    <tr><td colspan="5">
-        ${d.datos_personas
-            .map(e => "<a href='javascript:Personas.mostrar(\"" + e.ref['@ref'].id + "\")'>"
-                + e.data.nombre
-                + " " + e.data.apellidos
-                + "</a>")
-            .join(", ")}
-    </td></tr>
-    `;
-    msj += Proyectos.pieTable();
-    return msj;
 }
 
 Plantilla.pieTabla = function () {
@@ -179,5 +139,26 @@ Plantilla.procesarAcercaDe = function () {
     this.descargarRuta("/plantilla/acercade", this.mostrarAcercaDe);
 }
 
+/**
+ * Función para mostrar en pantalla todos los jugadores que se han recuperado de la BBDD.
+ * @param {vector_de_jugadores} vector Vector con los datos de los jugadores a mostrar
+ */
 
+Plantilla.imprimeJugadores = function (vector) {
+    
+    let msj = "";
+    msj += Plantilla.cabeceraTable();
+    vector.data.forEach(e => msj += Plantilla.cuerpoTr(e))
+    msj += Plantilla.pieTable();
 
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de jugadores", msj )
+}
+
+/**
+ * Función principal para recuperar los jugadores desde el MS y, posteriormente, imprimirlos.
+ */
+Plantilla.procesarListar=function()
+{
+    this.descargarRuta("/plantilla/getTodosJugadores",this.imprimeJugadores);
+}

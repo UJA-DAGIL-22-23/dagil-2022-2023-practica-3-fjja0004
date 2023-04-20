@@ -64,13 +64,13 @@ describe('Servidor PLANTILLA:', () => {
         );
     });
     
-    it('Devuelve un vector de tamaño 3 al consultar mediante getTodosJugadores', (done) => {
+    it('Devuelve un vector de tamaño 10 al consultar mediante getTodosJugadores', (done) => {
       supertest(app)
-        .get('/getTodas')
+        .get('/getTodosJugadores')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
-          assert(res.body.data.length === 3);
+          assert(res.body.data.length === 10);
         })
         .end((error) => { error ? done.fail(error) : done(); }
         );

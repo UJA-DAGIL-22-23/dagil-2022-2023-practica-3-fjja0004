@@ -22,7 +22,7 @@ describe('Servidor FRONT-END:', () => {
         .expect(function (res) {
           //console.log( res.text ); // Para comprobar qué contiene exactamente res.text
           assert(res.hasOwnProperty('text'));
-          assert(res.text.search("<h1>Aplicación Microservicios Plantilla</h1>")>=0)
+          assert(res.text.search("<h1>CRÍQUET <span>Jugadores del Derbyshire</span></h1>")>=0)
 
         })
         .end((error) => { error ? done.fail(error) : done() })
@@ -34,7 +34,7 @@ describe('Servidor FRONT-END:', () => {
           .expect(function (res) {
             //console.log( res.text ); // Para comprobar qué contiene exactamente res.text
             assert(res.hasOwnProperty('text'));
-            assert(res.text.search("<h1>Aplicación Microservicios Plantilla</h1>")>=0)
+            assert(res.text.search("<h1>CRÍQUET <span>Jugadores del Derbyshire</span></h1>")>=0)
   
           })
           .end((error) => { error ? done.fail(error) : done() })

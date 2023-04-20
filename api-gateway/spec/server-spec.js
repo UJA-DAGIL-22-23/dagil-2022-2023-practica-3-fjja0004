@@ -39,16 +39,15 @@ describe('API Gateway: rutas estáticas', () => {
         })
         .end((error) => { error ? done.fail(error) : done() })
     });
-    it('Devuelve MS Plantilla Acerca De', (done) => {
+    it('Devuelve todos los jugadores', (done) => {
       supertest(app)
         .get('/plantilla/getTodosJugadores')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(function (res) {
           //console.log( "BODY ACERCA DE ", res.body ); // Para comprobar qué contiene exactamente res.body
-          assert(res.body.data.lenght === 20)
-          assert(res.body.hasOwnProperty('nombre'));
-          assert(res.body.mensaje === "Max");
+          assert(res.body.hasOwnProperty('data'));
+          assert(res.body.data.lenght !== 0);
 
         })
         .end((error) => { error ? done.fail(error) : done() })

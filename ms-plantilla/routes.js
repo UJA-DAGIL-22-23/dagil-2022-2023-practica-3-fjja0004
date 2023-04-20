@@ -47,5 +47,17 @@ router.get("/test_db", async (req, res) => {
 });
 
 
+/**
+ * Devuelve todas los jugadores que hay en la BBDD
+ */
+router.get("/getTodosJugadores", async (req, res) => {
+    try {
+        await callbacks.getTodosJugadores(req, res)
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
 // Exporto el módulo para poder usarlo en server
 module.exports = router;
