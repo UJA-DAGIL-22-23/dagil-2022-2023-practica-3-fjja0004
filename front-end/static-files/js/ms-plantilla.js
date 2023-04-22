@@ -24,16 +24,14 @@ Plantilla.datosDescargadosNulos = {
 /**
  * Función principal para recuperar los nombres de los jugadores desde el MS y, posteriormente, imprimirlos.
  */
-Plantilla.procesarNombres=function()
-{
+Plantilla.procesarNombres = function () {
     this.recupera(this.imprimeNombres);
 }
 
 /**
  * Función principal para recuperar los jugadores desde el MS y, posteriormente, imprimirlos.
  */
-Plantilla.procesarListar=function()
-{
+Plantilla.procesarListar = function () {
     this.recupera(this.imprimeJugadores);
 }
 
@@ -69,14 +67,14 @@ Plantilla.recupera = async function (callBackFn) {
  */
 
 Plantilla.imprimeNombres = function (vector) {
-    
+
     let msj = "";
     msj += Plantilla.cabeceraTableNombres();
     vector.forEach(e => msj += Plantilla.cuerpoTrNombres(e))
     msj += Plantilla.pieTable();
 
     // Borro toda la info de Article y la sustituyo por la que me interesa
-    Frontend.Article.actualizar( "Listado de nombres", msj )
+    Frontend.Article.actualizar("Listado de nombres", msj)
 }
 
 /**
@@ -85,14 +83,14 @@ Plantilla.imprimeNombres = function (vector) {
  */
 
 Plantilla.imprimeJugadores = function (vector) {
-    
+
     let msj = "";
     msj += Plantilla.cabeceraTable();
     vector.forEach(e => msj += Plantilla.cuerpoTr(e))
     msj += Plantilla.pieTable();
 
     // Borro toda la info de Article y la sustituyo por la que me interesa
-    Frontend.Article.actualizar( "Listado de jugadores", msj )
+    Frontend.Article.actualizar("Listado de jugadores", msj)
 }
 
 /**
@@ -102,9 +100,12 @@ Plantilla.imprimeJugadores = function (vector) {
 Plantilla.cabeceraTableNombres = function () {
     return `<table class="listado-jugadores">
         <thead>
-            <th>Nombre</th>
+                <th>Nombre</th>
         </thead>
         <tbody>
+        <a href="javascript:Plantilla.listarAlf()" 
+            class="opcion-principal mostrar
+                "title="Listar todos los nombres de los jugadores orden alfabético">Ordenar alfabéticamente</a>
     `;
 }
 
@@ -141,6 +142,35 @@ Plantilla.cuerpoTrNombres = function (a) {
             <td><em>${d.nombre}</em></td>
             </tr>`;
 }
+
+/**
+ * Compara dos nombres dados para saber cuál va primero alfabéticamente
+ * @param {*} a Primer nombre
+ * @param {*} b Segundo nombre
+ * @returns -1 si a es "menor" que b, 1 si a es "mayor" que b, 0 si los nombres son iguales
+ */
+Plantilla.compare = function(a, b) {
+    var nombreA = a.data.nombre.toUpperCase(); // convertir nombre a mayúsculas para comparar
+    var nombreB = b.data.nombre.toUpperCase(); // convertir nombre a mayúsculas para comparar
+    if (nombreA < nombreB) {
+        return -1;
+    }
+    if (nombreA > nombreB) {
+        return 1;
+    }
+    // si los nombres son iguales, no se cambia el orden
+    return 0;
+};
+
+Plantilla.ordenarAlfabeticamente = function (vector) {
+    vector.sort(Plantilla.compare);
+    Plantilla.imprimeNombres(vector);
+}
+
+Plantilla.listarAlf = function () {
+    const a = Plantilla.recupera(Plantilla.ordenarAlfabeticamente);
+}
+
 
 /**
  * Muestra la información de cada jugador en un elemento TR con sus correspondientes TD
