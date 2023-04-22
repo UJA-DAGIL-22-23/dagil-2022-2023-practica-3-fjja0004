@@ -5,5 +5,39 @@
  * @date 03-Feb-2023
  */
 
- 
+ @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+ * {
+     font-family: 'Source Sans Pro', sans-serif;
+ }
+
+ table.listado-jugadores {
+     width: 100%;
+     border: 1px solid rgba(0, 0, 100, 0.8);
+ }
+
+ table.listado-jugadores thead th,
+ table.listado-jugadores tbody th {
+     margin: 3px;
+     height: 2.5em;
+     background-color: rgba(0, 0, 0, 0.4);
+     text-transform: uppercase;
+
+ }
+
+
+ table.listado-jugadores tbody th {
+     background-color: rgba(0, 0, 0, 0.1);
+ }
+
+ table.listado-jugadores tbody td {
+     padding: 0.5em;
+     text-align: center;
+ }
+
+ table.listado-jugadores tbody tr {
+     margin: 3px;
+     height: 2em;
+     background-color: rgba(0, 0, 100, 0.1)
+ }
 

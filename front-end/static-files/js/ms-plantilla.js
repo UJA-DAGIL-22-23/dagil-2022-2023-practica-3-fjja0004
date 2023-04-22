@@ -20,34 +20,154 @@ Plantilla.datosDescargadosNulos = {
     altura: ""
 }
 
+
 /**
- * Función que crea la cabecera de la tabla en la que se 
- * muestra la información
+ * Función principal para recuperar los nombres de los jugadores desde el MS y, posteriormente, imprimirlos.
+ */
+Plantilla.procesarNombres=function()
+{
+    this.recupera(this.imprimeNombres);
+}
+
+/**
+ * Función principal para recuperar los jugadores desde el MS y, posteriormente, imprimirlos.
+ */
+Plantilla.procesarListar=function()
+{
+    this.recupera(this.imprimeJugadores);
+}
+
+/**
+ * Función que recupera todos los jugadores llamando al MS Plantilla
+ * @param {función} callBackFn Función a la que se llamará una vez recibidos los datos.
+ */
+Plantilla.recupera = async function (callBackFn) {
+    let response = null
+
+    // Intento conectar con el microservicio jugadores
+    try {
+        const url = Frontend.API_GATEWAY + "/plantilla/getTodosJugadores"
+        response = await fetch(url)
+
+    } catch (error) {
+        alert("Error: No se han podido acceder al API Gateway")
+        console.error(error)
+        //throw error
+    }
+
+    // Muestro todos los jugadores que se han descargado
+    let vectorjugadores = null
+    if (response) {
+        vectorjugadores = await response.json()
+        callBackFn(vectorjugadores.data)
+    }
+}
+
+/**
+ * Función para mostrar en pantalla todos los nombres de los jugadores que se han recuperado de la BBDD.
+ * @param {vector_de_jugadores} vector Vector con los nombres de los jugadores a mostrar
+ */
+
+Plantilla.imprimeNombres = function (vector) {
+    
+    let msj = "";
+    msj += Plantilla.cabeceraTableNombres();
+    vector.forEach(e => msj += Plantilla.cuerpoTrNombres(e))
+    msj += Plantilla.pieTable();
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de nombres", msj )
+}
+
+/**
+ * Función para mostrar en pantalla todos los jugadores que se han recuperado de la BBDD.
+ * @param {vector_de_jugadores} vector Vector con los datos de los jugadores a mostrar
+ */
+
+Plantilla.imprimeJugadores = function (vector) {
+    
+    let msj = "";
+    msj += Plantilla.cabeceraTable();
+    vector.forEach(e => msj += Plantilla.cuerpoTr(e))
+    msj += Plantilla.pieTable();
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de jugadores", msj )
+}
+
+/**
+ * Crea la cabecera para mostrar la info como tabla
  * @returns Cabecera de la tabla
  */
-Plantilla.cabeceraTable = function () {
+Plantilla.cabeceraTableNombres = function () {
     return `<table class="listado-jugadores">
         <thead>
-        <th>Nombre</th>
+            <th>Nombre</th>
         </thead>
         <tbody>
     `;
 }
 
 /**
- * Muestra el nombre de un jugador en un elemento TR con sus correspondientes TD
- * @param {jugador} p Datos del jugador a mostrar
- * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
+ * Crea la cabecera para mostrar la info como tabla
+ * @returns Cabecera de la tabla
  */
-Plantilla.cuerpoTr = function (p) {
-    const d = p.data
-
-    return `<tr title="${p.ref['@ref'].id}">
-    </tr>
+Plantilla.cabeceraTable = function () {
+    return `<table class="listado-jugadores">
+        <thead>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Posición</th>
+            <th>Estadísticas</th>
+            <th>Historial de equipos</th>
+            <th>Nacionalidad</th>
+            <th>Fecha de nacimiento</th>
+            <th>Peso</th>
+            <th>Altura</th>
+        </thead>
+        <tbody>
     `;
 }
 
-Plantilla.pieTabla = function () {
+/**
+ * Muestra el nombre de cada jugador en un elemento TR con sus correspondientes TD
+ * @param {jugador} a Nombre del jugador a mostrar
+ * @returns Cadena conteniendo todo el elemento TR que muestra el jugador.
+ */
+Plantilla.cuerpoTrNombres = function (a) {
+    const d = a.data
+
+    return `<tr title="${a.ref['@ref'].id}">
+            <td><em>${d.nombre}</em></td>
+            </tr>`;
+}
+
+/**
+ * Muestra la información de cada jugador en un elemento TR con sus correspondientes TD
+ * @param {jugador} a Datos del jugador a mostrar
+ * @returns Cadena conteniendo todo el elemento TR que muestra el jugador.
+ */
+Plantilla.cuerpoTr = function (a) {
+    const d = a.data
+
+    return `<tr title="${a.ref['@ref'].id}">
+            <td><em>${d.nombre}</em></td>
+            <td>${d.edad}</td>
+            <td>${d.posicion}</td>
+            <td>Partidos Jugados: ${d.estadisticas.partidosJugados} / Puntuación Promedio: ${d.estadisticas.puntuacionPromedio} / Puntuación Máxima: ${d.estadisticas.puntuacionMaxima} / Puntuación Mínima: ${d.estadisticas.puntuacionMinima}</td>
+            <td>${d.historialEquipos.join(" / ")}</td>
+            <td>${d.nacionalidad}</td>
+            <td>${d.fechaNacimiento}</td>
+            <td>${d.peso}</td>
+            <td>${d.altura}</td>
+            </tr>`;
+}
+
+/**
+ * Pie de la tabla en la que se muestran los jugadores
+ * @returns Cadena con el pie de la tabla
+ */
+Plantilla.pieTable = function () {
     return "</tbody></table>";
 }
 
@@ -137,28 +257,4 @@ Plantilla.procesarHome = function () {
  */
 Plantilla.procesarAcercaDe = function () {
     this.descargarRuta("/plantilla/acercade", this.mostrarAcercaDe);
-}
-
-/**
- * Función para mostrar en pantalla todos los jugadores que se han recuperado de la BBDD.
- * @param {vector_de_jugadores} vector Vector con los datos de los jugadores a mostrar
- */
-
-Plantilla.imprimeJugadores = function (vector) {
-    
-    let msj = "";
-    msj += Plantilla.cabeceraTable();
-    vector.data.forEach(e => msj += Plantilla.cuerpoTr(e))
-    msj += Plantilla.pieTable();
-
-    // Borro toda la info de Article y la sustituyo por la que me interesa
-    Frontend.Article.actualizar( "Listado de jugadores", msj )
-}
-
-/**
- * Función principal para recuperar los jugadores desde el MS y, posteriormente, imprimirlos.
- */
-Plantilla.procesarListar=function()
-{
-    this.descargarRuta("/plantilla/getTodosJugadores",this.imprimeJugadores);
 }
