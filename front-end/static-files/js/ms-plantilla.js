@@ -36,6 +36,13 @@ Plantilla.procesarListar = function () {
 }
 
 /**
+ * Función principal para recuperar los nombres de los jugadores ordenados alfabéticamente desde el MS y, posteriormente, imprimirlos.
+ */
+Plantilla.listarAlf = function () {
+    const a = Plantilla.recupera(Plantilla.ordenarAlfabeticamente);
+}
+
+/**
  * Función que recupera todos los jugadores llamando al MS Plantilla
  * @param {función} callBackFn Función a la que se llamará una vez recibidos los datos.
  */
@@ -162,13 +169,13 @@ Plantilla.compare = function(a, b) {
     return 0;
 };
 
+/**
+ * Ordena el vector de jugadores para posteriormente mostrarlos en la tabla
+ * @param {jugadores} vector 
+ */
 Plantilla.ordenarAlfabeticamente = function (vector) {
     vector.sort(Plantilla.compare);
     Plantilla.imprimeNombres(vector);
-}
-
-Plantilla.listarAlf = function () {
-    const a = Plantilla.recupera(Plantilla.ordenarAlfabeticamente);
 }
 
 
