@@ -249,3 +249,31 @@
   }
 
 ```
+
+# Incremento 1
+
+En este incremento se han realizado las historias de usuario 01, 02, 03 y 04.
+
+## Tablero Trello al inicio del incremento
+
+![image](assets/img/Trello_Inicio_I1.jpg)
+
+## Tablero Trello al final del incremento
+
+![image](assets/img/Trello_Final_I1.jpg)
+
+## Captura HU 01
+Información del autor al pulsar el botón "Acerca de".
+![image](assets/img/HU_01.png)
+
+## Captura HU 02
+Listado de los nombres de todos los jugadores.
+![image](assets/img/HU_02.png)
+
+## Captura HU 03
+Listado en orden alfabético de todos los nombres de los jugadores.
+![image](assets/img/HU_03.png)
+
+## Captura HU 04
+Listado con todos los datos de todos los jugadores.
+![image](assets/img/HU_04.png)
